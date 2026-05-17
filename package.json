@@ -1,0 +1,13 @@
+{
+  "name": "dream-design-renovate-site",
+  "private": true,
+  "description": "Static site — local: npm install && npm run dev. Deploy: import folder in Vercel or run npx vercel.",
+  "scripts": {
+    "dev": "serve . -l 3000",
+    "start": "serve . -l 3000",
+    "preview": "serve . -l 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
