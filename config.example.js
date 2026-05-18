@@ -6,7 +6,7 @@
 window.DDR_PUBLIC_CONFIG = {
   contactApiUrl: '/api/contact',
   /** Optional client fallback if API is not configured (Formspree form id only) */
-  formspreeId: '',
+  formspreeId: 'xeedoaee',
   /** Full Calendly event URL, e.g. https://calendly.com/your-name/virtual-consult */
   calendlyUrl: '',
 };
