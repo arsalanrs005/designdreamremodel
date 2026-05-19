@@ -411,6 +411,31 @@ body:not([data-page="home"]) header:not(.scrolled) .hamburger span{background:va
 .ba-labels{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--warm-gray);margin-top:14px;padding:0 8px;font-family:var(--body-font)}
 .ba-hint{text-align:center;font-size:14px;color:var(--warm-gray);margin-bottom:20px;font-family:var(--body-font)}
 .team-row{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:40px;max-width:920px;margin-left:auto;margin-right:auto}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
+.realtor-hero{padding:clamp(80px,12vw,140px) 0 80px;background:linear-gradient(165deg,var(--charcoal) 0%,#2a2620 100%);color:var(--white);text-align:center}
+.realtor-hero .page-header-title{color:var(--white)}
+.realtor-hero .page-header-sub{color:rgba(255,255,255,.82);max-width:720px;margin:0 auto}
+.realtor-quest{background:var(--smoke);border:1px solid rgba(201,169,110,.2);border-radius:20px;padding:36px 40px;margin:48px auto 0;max-width:800px;text-align:left}
+.realtor-quest strong{color:var(--charcoal)}
+.realtor-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.realtor-pillar{background:var(--white);border:1px solid rgba(201,169,110,.15);padding:32px 28px;border-radius:16px}
+.realtor-pillar h3{font-family:var(--heading-font);font-size:20px;font-weight:800;margin-bottom:12px;color:var(--charcoal)}
+.realtor-pillar p{font-size:14px;color:var(--warm-gray);line-height:1.75}
+.realtor-steps{counter-reset:rst;display:grid;gap:20px;max-width:720px;margin:40px auto 0}
+.realtor-step{display:flex;gap:20px;align-items:flex-start;padding:24px;background:var(--white);border-radius:16px;border:1px solid rgba(201,169,110,.12)}
+.realtor-step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--charcoal);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px}
+.realtor-zips{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.realtor-zip{font-size:12px;padding:8px 14px;border-radius:999px;background:var(--smoke);border:1px solid rgba(201,169,110,.2);font-weight:600;color:var(--charcoal)}
+.realtor-split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:56px}
+.realtor-grand{background:var(--gold);color:var(--charcoal);padding:48px 40px;border-radius:20px}
+.realtor-grand h3{font-family:var(--heading-font);font-size:28px;font-weight:800;margin-bottom:16px}
+.home-realtor-band{background:var(--charcoal);color:var(--white);padding:48px 0}
+.home-realtor-band .section-desc{color:rgba(255,255,255,.8)}
+@media(max-width:1024px){
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .realtor-pillars{grid-template-columns:1fr}
+  .realtor-split{grid-template-columns:1fr}
+}
 .team-mini{background:var(--white);border-radius:20px;padding:36px 28px;border:1px solid rgba(201,169,110,.15);text-align:center;box-shadow:0 8px 32px rgba(26,26,26,.06)}
 .team-mini-img{width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block}
 .team-mini-name{font-family:var(--heading-font);font-weight:800;font-size:20px;margin-bottom:6px}
@@ -678,6 +703,7 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
   .explore-grid{grid-template-columns:1fr 1fr}
   .model-compare-grid{grid-template-columns:1fr}
   .team-row{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   :root{--content-gutter-x:20px}
@@ -739,6 +765,7 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
         <button type="button" class="nav-link" data-nav="about" onclick="showPage('about',this)">About</button>
         <button type="button" class="nav-link" data-nav="services" onclick="showPage('services',this)">Services</button>
         <button type="button" class="nav-link" data-nav="gallery" onclick="showPage('gallery',this)">Gallery</button>
+        <button type="button" class="nav-link" data-nav="realtors" onclick="showPage('realtors',this)">Realtors</button>
         <button type="button" class="nav-link" data-nav="financing" onclick="showPage('financing',this)">Funding</button>
         <button type="button" class="nav-link" data-nav="contact" onclick="showPage('contact',this)">Contact</button>
       </nav>
@@ -759,6 +786,7 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
   <button type="button" class="nav-link" data-nav="about" onclick="showPage('about');toggleMobileNav()">About</button>
   <button type="button" class="nav-link" data-nav="services" onclick="showPage('services');toggleMobileNav()">Services</button>
   <button type="button" class="nav-link" data-nav="gallery" onclick="showPage('gallery');toggleMobileNav()">Gallery</button>
+  <button type="button" class="nav-link" data-nav="realtors" onclick="showPage('realtors');toggleMobileNav()">Realtors</button>
   <button type="button" class="nav-link" data-nav="financing" onclick="showPage('financing');toggleMobileNav()">Funding</button>
   <button type="button" class="nav-link" data-nav="contact" onclick="showPage('contact');toggleMobileNav()">Contact</button>
   <div class="mobile-nav-contact">
@@ -1158,6 +1186,15 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
     </div>
   </section>
 
+  <section class="home-realtor-band">
+    <div class="container" style="text-align:center">
+      <span class="section-label" style="color:var(--gold)">Realtors &amp; listing prep</span>
+      <h2 class="section-title" style="color:var(--white);margin-bottom:16px">Fast-turn renovation for listings</h2>
+      <p class="section-desc" style="max-width:640px;margin:0 auto 28px">Partner program for agents — cosmetic upgrades, handyman punch lists, virtual showroom pricing, and QuestRock-aligned funding conversations. No paid lead fees.</p>
+      <button type="button" class="btn btn-gold" onclick="showPage('realtors')">Explore the realtor program</button>
+    </div>
+  </section>
+
   <!-- FINANCING STRIP (compact) -->
   <div class="fin-banner">
     <div class="container">
@@ -1230,22 +1267,44 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
           </div>
         </div>
       </div>
-      <div class="team-row">
-        <div class="team-mini">
+      <div class="team-grid">
+        <div class="team-mini reveal">
           <img class="team-mini-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Nikk" loading="lazy"/>
           <div class="team-mini-name">Nikk</div>
           <div class="team-mini-role">OPERATIONS &amp; SCHEDULING</div>
           <p class="team-mini-bio">Keeps calendars honest, crews aligned, and homeowners informed — the operational glue between virtual planning and field execution.</p>
         </div>
-        <div class="team-mini">
+        <div class="team-mini reveal reveal-delay-1">
           <img class="team-mini-img" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Jennifer" loading="lazy"/>
           <div class="team-mini-name">Jennifer</div>
           <div class="team-mini-role">DESIGN &amp; CUSTOMER EXPERIENCE</div>
           <p class="team-mini-bio">Guides palettes, layouts, and selections in the virtual showroom while making sure every client feels heard — not rushed.</p>
         </div>
+        <div class="team-mini reveal reveal-delay-2">
+          <img class="team-mini-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80" alt="Tim" loading="lazy"/>
+          <div class="team-mini-name">Tim</div>
+          <div class="team-mini-role">CLIENT CONCIERGE</div>
+          <p class="team-mini-bio">Your first human touchpoint — answers questions, routes you to the right expert, and makes virtual consults feel easy instead of overwhelming.</p>
+        </div>
+        <div class="team-mini reveal">
+          <img class="team-mini-img" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="David" loading="lazy"/>
+          <div class="team-mini-name">David</div>
+          <div class="team-mini-role">ASSOCIATE</div>
+          <p class="team-mini-bio">Supports homeowners and realtors in the field — walkthroughs, punch lists, and neighborhood outreach with a personal DDR code on every touchpoint.</p>
+        </div>
+        <div class="team-mini reveal reveal-delay-1">
+          <img class="team-mini-img" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Blake" loading="lazy"/>
+          <div class="team-mini-name">Blake</div>
+          <div class="team-mini-role">ASSOCIATE</div>
+          <p class="team-mini-bio">Helps clients move from ballpark to booked work — flyers, follow-ups, and on-the-ground conversations about our virtual showroom model.</p>
+        </div>
+        <div class="team-mini reveal reveal-delay-2">
+          <img class="team-mini-img" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80" alt="Bastian" loading="lazy"/>
+          <div class="team-mini-name">Bastian</div>
+          <div class="team-mini-role">ASSOCIATE</div>
+          <p class="team-mini-bio">Connects communities to fast-turn listing prep and homeowner programs — every flyer and door knock can carry his unique referral code.</p>
+        </div>
       </div>
-    </div>
-  </section>
 
   <section class="cta-section">
     <div class="container">
@@ -1466,6 +1525,125 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
 </div>
 
 <!-- ============================================================ -->
+<!-- REALTOR / LISTING PREP PAGE -->
+<!-- ============================================================ -->
+<div id="page-realtors" class="page">
+  <section class="realtor-hero">
+    <div class="container">
+      <span class="section-label" style="color:var(--gold)">Realtor fast-turnaround program</span>
+      <h1 class="page-header-title">Listing-ready renovations,<br/>without showroom markup.</h1>
+      <div class="divider divider-center"></div>
+      <p class="page-header-sub">Dream Design Renovate helps agents move listings faster — handyman punch lists, cosmetic refreshes, and scoped kitchen/bath work — routed through our virtual showroom and tied to smart funding conversations via QuestRock where it fits.</p>
+      <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button type="button" class="btn btn-gold" onclick="showContactAsRealtor()">Partner as a realtor</button>
+        <button type="button" class="btn btn-white" onclick="openPricingWizard()">Ballpark a listing scope</button>
+      </div>
+      <div class="realtor-quest reveal">
+        <strong>QuestRock partnership</strong>
+        <p style="margin-top:12px;font-size:15px;color:var(--warm-gray);line-height:1.75">We align listing-prep and homeowner upgrades with QuestRock so agents and sellers can explore funding paths that match equity and timeline — not high-pressure retail contractor cards. <span id="questRockLinkWrap"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:var(--white)">
+    <div class="container">
+      <span class="section-label">Why agents work with us</span>
+      <h2 class="section-title" style="margin-bottom:12px">Built for speed &amp; showability</h2>
+      <div class="divider"></div>
+      <p class="section-desc" style="max-width:720px;margin-bottom:0">Realtors constantly need reliable crews for pre-listing work. We skip expensive showrooms, scope virtually, and prioritize fast-turn scopes that help homes show beautifully.</p>
+      <div class="realtor-pillars">
+        <div class="realtor-pillar reveal">
+          <h3>Pre-list punch lists</h3>
+          <p>Handyman-first fixes — paint touch-ups, hardware, trim, small repairs — so listings photograph clean without a full remodel.</p>
+        </div>
+        <div class="realtor-pillar reveal reveal-delay-1">
+          <h3>Cosmetic refreshes</h3>
+          <p>Kitchen and bath updates that read well on MLS and open houses — cabinets, surfaces, fixtures, lighting — scoped to deadline.</p>
+        </div>
+        <div class="realtor-pillar reveal reveal-delay-2">
+          <h3>Funding clarity</h3>
+          <p>Virtual showroom + smart project funding guidance (QuestRock-aligned) so sellers understand options before they stall on price.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:var(--smoke)">
+    <div class="container" style="text-align:center">
+      <span class="section-label">How it works</span>
+      <h2 class="section-title">From agent call to crew on site</h2>
+      <div class="realtor-steps">
+        <div class="realtor-step reveal">
+          <div class="realtor-step-num">1</div>
+          <div><strong style="font-size:17px;color:var(--charcoal)">Share the listing goal</strong><p style="font-size:14px;color:var(--warm-gray);margin-top:8px;line-height:1.7">Agent or homeowner tells us move date, must-fix items, and budget band — often via our 60-second ballpark tool or a call with Tim (Client Concierge).</p></div>
+        </div>
+        <div class="realtor-step reveal reveal-delay-1">
+          <div class="realtor-step-num">2</div>
+          <div><strong style="font-size:17px;color:var(--charcoal)">Virtual scope &amp; fast estimate</strong><p style="font-size:14px;color:var(--warm-gray);margin-top:8px;line-height:1.7">Jennifer and Shaun align design intent with field reality — transparent scope, no retail showroom padding.</p></div>
+        </div>
+        <div class="realtor-step reveal reveal-delay-2">
+          <div class="realtor-step-num">3</div>
+          <div><strong style="font-size:17px;color:var(--charcoal)">Execute &amp; track</strong><p style="font-size:14px;color:var(--warm-gray);margin-top:8px;line-height:1.7">Nikk sequences crews; David, Blake, and Bastian support neighborhoods with coded flyers so we know which associate sourced the lead.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:var(--white)">
+    <div class="container">
+      <div class="realtor-split">
+        <div class="reveal">
+          <span class="section-label">For realtors</span>
+          <h2 class="section-title" style="font-size:clamp(28px,4vw,40px)">Your listing prep lane</h2>
+          <p class="section-desc">Add us to your vendor bench for Roswell, Alpharetta, Marietta, Milton, Sandy Springs, East Cobb, and greater Atlanta. We are building our agent database outreach so you hear about the program directly — not through paid lead marketplaces.</p>
+          <ul style="margin-top:24px;font-size:15px;color:var(--warm-gray);line-height:1.9;padding-left:20px">
+            <li>Fast-turn handyman &amp; cosmetic scopes</li>
+            <li>Before/after ready for MLS &amp; social</li>
+            <li>Virtual consults — low friction for sellers</li>
+            <li>Dedicated partner intake on our contact form</li>
+          </ul>
+          <button type="button" class="btn btn-gold" style="margin-top:28px" onclick="showContactAsRealtor()">Request agent partnership</button>
+        </div>
+        <div class="realtor-grand reveal reveal-delay-1">
+          <h3>Grand opening &amp; homeowner outreach</h3>
+          <p style="font-size:15px;line-height:1.8;margin-bottom:16px">We are launching targeted outreach in select zip codes — homeowners in homes valued $300k+ — with one clear invitation: virtual showroom tours, transparent ballpark pricing, and smart funding options.</p>
+          <p style="font-size:14px;line-height:1.75;opacity:.9">Field associates (David, Blake, Bastian) carry <strong>unique referral codes</strong> on door hangers and flyers so every knock and drop is attributed. Mention your code when you contact us.</p>
+          <button type="button" class="btn btn-dark" style="margin-top:24px" onclick="openPricingWizard()">Get your ballpark range</button>
+        </div>
+      </div>
+      <div style="margin-top:56px;text-align:center">
+        <span class="section-label">Target markets</span>
+        <h3 style="font-family:var(--heading-font);font-size:24px;font-weight:800;margin:12px 0 8px">Metro Atlanta focus</h3>
+        <div class="realtor-zips" style="justify-content:center">
+          <span class="realtor-zip">Atlanta</span>
+          <span class="realtor-zip">Roswell</span>
+          <span class="realtor-zip">Alpharetta</span>
+          <span class="realtor-zip">Marietta</span>
+          <span class="realtor-zip">Milton</span>
+          <span class="realtor-zip">Sandy Springs</span>
+          <span class="realtor-zip">East Cobb</span>
+          <span class="realtor-zip">Johns Creek</span>
+          <span class="realtor-zip">Woodstock</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-inner">
+        <h2 class="cta-title">Let's move your next listing<br/><em class="gold serif">faster.</em></h2>
+        <p class="cta-text">Realtors: start a partnership conversation. Homeowners: use our ballpark tool or ask for your associate's referral code.</p>
+        <div class="cta-btns">
+          <button type="button" class="btn btn-gold" onclick="showPage('contact')">Contact the team</button>
+          <a href="tel:4044940994" class="btn btn-outline">404-494-0994</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end realtors -->
+
+<!-- ============================================================ -->
 <!-- FINANCING PAGE -->
 <!-- ============================================================ -->
 <div id="page-financing" class="page">
@@ -1623,9 +1801,14 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
                 <option>Kitchen Design &amp; Remodeling</option>
                 <option>Bathroom Design &amp; Remodeling</option>
                 <option>Basement Design &amp; Remodeling</option>
+                <option>Realtor / Listing prep program</option>
                 <option>Multiple Services</option>
                 <option>Other / Not Sure</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label for="cf-referral">REFERRAL CODE <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--warm-gray)">(from flyer or associate)</span></label>
+              <input id="cf-referral" name="referralCode" type="text" autocomplete="off" placeholder="e.g. BLAKE-ATL, DAVID-ROSWELL"/>
             </div>
             <div class="form-group"><label for="cf-address">PROJECT ADDRESS</label><input id="cf-address" name="streetAddress" type="text" autocomplete="street-address" placeholder="123 Main St, Atlanta, GA"/></div>
             <div class="form-group voice-input-wrap"><label for="cf-details">PROJECT DETAILS * <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--warm-gray)">(tap mic to dictate)</span></label><textarea id="cf-details" name="projectDetails" placeholder="Tell us about your renovation project — what you have in mind, current condition, and any specific goals..." rows="4" required></textarea>
@@ -1699,6 +1882,7 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
           <li><button onclick="showPage('about')">About Us</button></li>
           <li><button onclick="showPage('services')">Services</button></li>
           <li><button onclick="showPage('gallery')">Gallery</button></li>
+          <li><button onclick="showPage('realtors')">Realtor program</button></li>
           <li><button onclick="showPage('financing')">Project funding</button></li>
           <li><button onclick="showPage('contact')">Contact</button></li>
         </ul>
@@ -1748,7 +1932,11 @@ var PAGE_SEO = {
   },
   about: {
     title: 'About Dream Design Renovate | Virtual Remodeling Mission & Team',
-    description: 'Why we built a low-overhead virtual showroom model for Georgia homeowners. Meet Shaun, Nikk, and Jennifer — operations, design, and field leadership without legacy showroom markups.'
+    description: 'Meet Shaun, Nikk, Jennifer, Tim, David, Blake, and Bastian — virtual showroom remodeling for Metro Atlanta without legacy showroom markups.'
+  },
+  realtors: {
+    title: 'Realtor Listing Prep Program | Fast-Turn Renovations | Dream Design Renovate',
+    description: 'Fast-turn listing prep for Atlanta-area realtors — handyman punch lists, cosmetic refreshes, QuestRock-aligned funding, and field referral codes. No paid lead marketplace fees.'
   },
   services: {
     title: 'Renovation Services | Handyman, Kitchen, Bath & Basement | Virtual Showroom',
@@ -1785,6 +1973,22 @@ function updatePageSeo(page) {
 }
 
 // ── PAGE NAVIGATION ──
+function showContactAsRealtor() {
+  showPage('contact');
+  setTimeout(function() {
+    var s = document.getElementById('cf-service');
+    if (s) s.value = 'Realtor / Listing prep program';
+  }, 150);
+}
+
+function initQuestRockLink() {
+  var wrap = document.getElementById('questRockLinkWrap');
+  var url = (window.DDR_PUBLIC_CONFIG && window.DDR_PUBLIC_CONFIG.questRockUrl) || '';
+  if (wrap && url) {
+    wrap.innerHTML = ' <a href="' + url.replace(/"/g, '&quot;') + '" target="_blank" rel="noopener noreferrer" style="color:var(--gold-dark);font-weight:600">Learn more at QuestRock →</a>';
+  }
+}
+
 function showPage(page, btn) {
   document.body.dataset.page = page;
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
@@ -1870,6 +2074,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   initBaSliders();
   if (typeof initPhase2 === 'function') initPhase2();
+  initQuestRockLink();
 });
 
 function initBaSliders() {

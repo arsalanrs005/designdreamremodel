@@ -5,6 +5,7 @@ function formatInquiryMessage(body) {
     'Budget: ' + (body.budget || '—'),
     'Timeline: ' + (body.timeline || '—'),
     'Address: ' + (body.streetAddress || '—'),
+    'Referral code: ' + (body.referralCode || '—'),
   ];
   if (body.scheduleDate && body.scheduleSlot) {
     lines.push('Preferred consult: ' + body.scheduleDate + ' · ' + body.scheduleSlot);

@@ -13,6 +13,7 @@ var DDR_CONFIG = {
   if (pub.calendlyUrl) DDR_CONFIG.calendlyUrl = pub.calendlyUrl;
   if (pub.contactApiUrl) DDR_CONFIG.contactApiUrl = pub.contactApiUrl;
   if (pub.formspreeId) DDR_CONFIG.formspreeId = pub.formspreeId;
+  if (pub.questRockUrl) DDR_CONFIG.questRockUrl = pub.questRockUrl;
 })();
 
 var p2State = { mode: 'wizard', step: 0, category: '', scope: '', budget: '', timeline: '', scheduleDate: '', scheduleSlot: '', contactName: '', contactPhone: '' };

@@ -33,6 +33,7 @@ function collectContactPayload() {
     scheduleDate: intake && intake.scheduleDate ? intake.scheduleDate : '',
     scheduleSlot: intake && intake.scheduleSlot ? intake.scheduleSlot : '',
     intakeSummary: intakeSummary,
+    referralCode: (document.getElementById('cf-referral') || {}).value || '',
   };
 }
 
@@ -77,6 +78,7 @@ async function submitViaFormspree(formId, payload, files) {
   fd.append('budget', payload.budget);
   fd.append('timeline', payload.timeline);
   fd.append('address', payload.streetAddress);
+  if (payload.referralCode) fd.append('referral_code', payload.referralCode);
   fd.append(
     'message',
     payload.intakeSummary

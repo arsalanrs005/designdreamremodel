@@ -9,4 +9,6 @@ window.DDR_PUBLIC_CONFIG = {
   formspreeId: 'xeedoaee',
   /** Full Calendly event URL, e.g. https://calendly.com/your-name/virtual-consult */
   calendlyUrl: '',
+  /** QuestRock partner URL for realtor / funding cross-link */
+  questRockUrl: '',
 };
