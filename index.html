@@ -1305,6 +1305,8 @@ footer{background:var(--charcoal);border-top:1px solid rgba(201,169,110,.15);pad
           <p class="team-mini-bio">Connects communities to fast-turn listing prep and homeowner programs — every flyer and door knock can carry his unique referral code.</p>
         </div>
       </div>
+    </div>
+  </section>
 
   <section class="cta-section">
     <div class="container">
@@ -1990,9 +1992,11 @@ function initQuestRockLink() {
 }
 
 function showPage(page, btn) {
+  var target = document.getElementById('page-' + page);
+  if (!target) return;
   document.body.dataset.page = page;
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-  document.getElementById('page-' + page).classList.add('active');
+  target.classList.add('active');
   document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
   document.querySelectorAll('.nav-link[data-nav="' + page + '"]').forEach(function(l) { l.classList.add('active'); });
   document.querySelectorAll('.nav-link[data-nav]').forEach(function(l) {
