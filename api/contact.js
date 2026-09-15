@@ -1,6 +1,6 @@
 function formatInquiryMessage(body) {
   const lines = [
-    '--- Dream Design Renovate inquiry ---',
+    '--- Havela Renovation Group inquiry ---',
     'Service: ' + (body.service || '—'),
     'Budget: ' + (body.budget || '—'),
     'Timeline: ' + (body.timeline || '—'),
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   const fullName = firstName + ' ' + lastName;
   const message = formatInquiryMessage(body);
   const subject =
-    'DDR inquiry: ' + (body.service || 'General') + ' — ' + fullName;
+    'Havela inquiry: ' + (body.service || 'General') + ' — ' + fullName;
 
   const formspreeId = process.env.FORMSPREE_FORM_ID;
   const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
           phone,
           subject,
           message,
-          from_name: 'Dream Design Renovate Website',
+          from_name: 'Havela Renovation Group Website',
         }),
       });
       const wData = await wRes.json().catch(function () {

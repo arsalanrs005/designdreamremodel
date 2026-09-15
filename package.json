@@ -1,5 +1,5 @@
 {
-  "name": "dream-design-renovate-site",
+  "name": "havela-renovation-group-site",
   "private": true,
   "description": "Static site — local: npm install && npm run dev. Deploy: import folder in Vercel or run npx vercel.",
   "scripts": {

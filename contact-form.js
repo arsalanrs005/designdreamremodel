@@ -87,7 +87,7 @@ async function submitViaFormspree(formId, payload, files) {
   );
   fd.append(
     '_subject',
-    'DDR inquiry: ' + (payload.service || 'General')
+    'Havela inquiry: ' + (payload.service || 'General')
   );
   if (files) {
     for (var i = 0; i < files.length; i++) {
@@ -142,7 +142,7 @@ async function deliverInquiry(payload) {
   var err =
     (attempt.data && attempt.data.error) ||
     (attempt.data && attempt.data.hint) ||
-    'Could not send your inquiry. Call 404-494-0994 or email dreamdesignrenovate@gmail.com.';
+    'Could not send your inquiry. Call 404-494-0994 or email HavelaRenovationGroup@gmail.com.';
   throw new Error(err);
 }
 

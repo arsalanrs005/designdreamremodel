@@ -41,7 +41,7 @@ var P2_BASE_RANGES = {
 var P2_SCOPE_MULT = { cosmetic: 0.7, standard: 1, full: 1.4 };
 var P2_TIMELINE_NOTE = { asap: 'Priority scheduling may affect lead times.', '1mo': '', '1-3': '', '3-6': '', planning: 'Great for design-first virtual showroom planning.' };
 
-var CHAT_GREETING = 'Hi — I\'m the Dream Design Renovate virtual assistant. Ask about ballpark pricing, our handyman-through-basement services, smart project funding, or booking a consult. No showroom markup, no pressure.';
+var CHAT_GREETING = 'Hi — I\'m the Havela Renovation Group virtual assistant. Ask about ballpark pricing, our handyman-through-basement services, smart project funding, or booking a consult. No showroom markup, no pressure.';
 var CHAT_QUICK = ['Ballpark pricing', 'Kitchen cost range', 'How funding works', 'Book a consultation', 'Talk to Shaun'];
 
 function formatMoney(n) {
@@ -263,7 +263,7 @@ function initCalendlyEmbed() {
   window.Calendly.initInlineWidget({
     url: DDR_CONFIG.calendlyUrl,
     parentElement: parent,
-    utm: { utmSource: 'dreamdesignrenovate' }
+    utm: { utmSource: 'havelarenovationgroup' }
   });
 }
 
@@ -455,7 +455,7 @@ function getChatReply(msg) {
   if (/fund|financ|heloc|equity|loan|pay/.test(m)) return 'We guide smart renovation funding — often equity-first (HELOC-style) rather than high-pressure retail contractor cards. Visit Project funding on the site or mention it in your inquiry; we keep it educational, not salesy.';
   if (/showroom|virtual|overhead|markup|model/.test(m)) return 'We eliminated expensive showrooms and unnecessary overhead — not quality. You get AI-assisted virtual design, real contractors, and transparent conversations instead of retail markups.';
   if (/schedule|book|appointment|consult|meet/.test(m)) { setTimeout(openScheduleOnly, 500); return 'Opening consultation scheduling — pick a date and time window that works for you.'; }
-  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Absolutely — call or text 404-494-0994 or email dreamdesignrenovate@gmail.com. I can also take you to the contact form with your details pre-filled if you have used the pricing tool.';
+  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Absolutely — call or text 404-494-0994 or email HavelaRenovationGroup@gmail.com. I can also take you to the contact form with your details pre-filled if you have used the pricing tool.';
   if (/area|location|atlanta|roswell|serve/.test(m)) return 'We serve Metro Atlanta including Roswell, Alpharetta, Marietta, Milton, Sandy Springs, and East Cobb.';
   if (/ai|chat|bot/.test(m)) return 'I am a guided assistant built for fast answers — not a replacement for Shaun and the team. For site-specific advice, a short virtual consult is best.';
   if (/open|start|questionnaire|wizard|yes|sure|please/.test(m) && /price|tool|ballpark/.test(m)) { setTimeout(openPricingWizard, 500); return 'Opening the ballpark pricing questionnaire now…'; }
