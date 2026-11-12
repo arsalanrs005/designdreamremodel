@@ -275,12 +275,14 @@ body:not([data-page="home"]) header:not(.scrolled) .hamburger span{background:va
 .faq-item{border-bottom:1px solid rgba(11,22,38,.08);padding:20px 0}
 .faq-item h3{font-family:var(--heading-font);font-size:18px;margin-bottom:8px;color:var(--charcoal)}
 .faq-item p{font-size:15px;color:var(--warm-gray);line-height:1.7}
-.chat-input-row{display:flex;gap:8px;padding:12px 16px 16px;border-top:1px solid rgba(0,0,0,.06);align-items:flex-end}
-.chat-input{flex:1;border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:12px 14px;font-size:14px;font-family:var(--body-font);resize:none;min-height:44px;max-height:100px}
-.chat-mic,.chat-send{width:44px;height:44px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.chat-input-row{display:grid;grid-template-columns:minmax(0,1fr) 44px 44px;gap:8px;padding:12px 14px 14px;border-top:1px solid rgba(0,0,0,.06);align-items:center;flex-shrink:0;background:var(--white);min-width:0}
+.chat-input{width:100%;min-width:0;max-width:100%;border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:11px 12px;font-size:14px;line-height:1.4;font-family:var(--body-font);resize:none;height:44px;max-height:44px;overflow:hidden;white-space:nowrap;box-sizing:border-box;outline:none;background:var(--white)}
+.chat-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.2)}
+.chat-mic,.chat-send{width:44px;height:44px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;transition:all .2s}
 .chat-mic{background:var(--smoke);color:var(--charcoal)}
 .chat-mic.listening{background:#e8f5e9;color:#2e7d32;animation:pulse-mic 1s infinite}
 .chat-send{background:var(--gold);color:var(--charcoal)}
+.chat-send:disabled{opacity:.5;cursor:not-allowed}
 @keyframes pulse-mic{0%,100%{box-shadow:0 0 0 0 rgba(46,125,50,.4)}50%{box-shadow:0 0 0 8px rgba(46,125,50,0)}}
 
 /* ─── P2 MODAL (pricing + schedule) ─── */
@@ -860,7 +862,7 @@ footer{background:var(--charcoal);border-top:1px solid rgba(212,175,55,.15);padd
   <p class="chat-typing" id="chatTyping" hidden>Thinking…</p>
   <div class="chat-quick" id="chatQuick"></div>
   <div class="chat-input-row">
-    <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask about pricing, services, funding…" aria-label="Message"></textarea>
+    <textarea class="chat-input" id="chatInput" rows="1" placeholder="Ask a question…" aria-label="Message"></textarea>
     <button type="button" class="chat-mic" id="chatMic" onclick="toggleVoiceInput('chatInput','chatMic')" aria-label="Voice input" title="Speak your question">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/></svg>
     </button>
