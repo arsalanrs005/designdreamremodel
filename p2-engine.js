@@ -41,8 +41,10 @@ var P2_BASE_RANGES = {
 var P2_SCOPE_MULT = { cosmetic: 0.7, standard: 1, full: 1.4 };
 var P2_TIMELINE_NOTE = { asap: 'Priority scheduling may affect lead times.', '1mo': '', '1-3': '', '3-6': '', planning: 'Great for design-first virtual showroom planning.' };
 
-var CHAT_GREETING = 'Hi — I\'m the Havela Renovation Group virtual assistant. Ask about ballpark pricing, our handyman-through-basement services, smart project funding, or booking a consult. No showroom markup, no pressure.';
+var CHAT_GREETING = 'Hi — I\'m Havela\'s assistant. I can answer questions about kitchens, baths, basements, handyman work, ballpark ranges, and smart funding, then help you book a virtual consult, open the project form, or call 404-494-0994.';
 var CHAT_QUICK = ['Ballpark pricing', 'Kitchen cost range', 'How funding works', 'Book a consultation', 'Talk to Shaun'];
+var chatHistory = [];
+var chatBusy = false;
 
 function formatMoney(n) {
   return '$' + Math.round(n).toLocaleString('en-US');
@@ -389,16 +391,16 @@ function toggleChat(open) {
   panel.setAttribute('aria-hidden', on ? 'false' : 'true');
   if (on && !panel.dataset.inited) {
     panel.dataset.inited = '1';
-    addChatMessage('bot', CHAT_GREETING);
+    addChatMessage('bot', CHAT_GREETING, { actions: actionsForChat('none') });
     renderChatQuick();
   }
   if (on) setTimeout(function() { document.getElementById('chatInput').focus(); }, 200);
 }
 
-function renderChatQuick() {
+function renderChatQuick(items) {
   var el = document.getElementById('chatQuick');
   el.innerHTML = '';
-  CHAT_QUICK.forEach(function(q) {
+  (items && items.length ? items : CHAT_QUICK).forEach(function(q) {
     var b = document.createElement('button');
     b.type = 'button';
     b.textContent = q;
@@ -407,40 +409,103 @@ function renderChatQuick() {
   });
 }
 
-function addChatMessage(role, text) {
+function addChatMessage(role, text, extras) {
   var box = document.getElementById('chatMessages');
+  var wrap = document.createElement('div');
+  wrap.className = 'chat-msg-wrap';
   var div = document.createElement('div');
   div.className = 'chat-msg ' + role;
   div.textContent = text;
-  box.appendChild(div);
+  wrap.appendChild(div);
+  if (role === 'bot' && extras && extras.actions && extras.actions.length) {
+    var row = document.createElement('div');
+    row.className = 'chat-msg-actions';
+    extras.actions.forEach(function(a) {
+      var b = document.createElement(a.href ? 'a' : 'button');
+      b.type = a.href ? undefined : 'button';
+      if (a.href) { b.href = a.href; }
+      b.textContent = a.label;
+      b.className = 'chat-action-btn';
+      if (a.onClick) b.onclick = a.onClick;
+      row.appendChild(b);
+    });
+    wrap.appendChild(row);
+  }
+  box.appendChild(wrap);
   box.scrollTop = box.scrollHeight;
 }
 
+function setChatBusy(on) {
+  chatBusy = !!on;
+  var send = document.querySelector('.chat-send');
+  var input = document.getElementById('chatInput');
+  if (send) send.disabled = chatBusy;
+  if (input) input.disabled = chatBusy;
+  var typing = document.getElementById('chatTyping');
+  if (typing) typing.hidden = !chatBusy;
+}
+
+function runChatAction(action) {
+  if (action === 'open_pricing') setTimeout(openPricingWizard, 400);
+  if (action === 'open_schedule') setTimeout(openScheduleOnly, 400);
+  if (action === 'open_contact') setTimeout(function() { showPage('contact'); toggleChat(false); }, 500);
+  if (action === 'call') { /* tel link shown in message actions */ }
+}
+
+function actionsForChat(action) {
+  var list = [];
+  if (action === 'open_pricing') list.push({ label: 'Open ballpark tool', onClick: openPricingWizard });
+  if (action === 'open_schedule') list.push({ label: 'Pick a consult time', onClick: openScheduleOnly });
+  if (action === 'open_contact') list.push({ label: 'Open project form', onClick: function() { showPage('contact'); toggleChat(false); } });
+  if (action === 'call') list.push({ label: 'Call 404-494-0994', href: 'tel:4044940994' });
+  if (action === 'none' || !action) {
+    list.push({ label: 'Book consult', onClick: openScheduleOnly });
+    list.push({ label: 'Project form', onClick: function() { showPage('contact'); toggleChat(false); } });
+    list.push({ label: 'Call now', href: 'tel:4044940994' });
+  }
+  return list;
+}
+
+async function askHavelaChat(text) {
+  chatHistory.push({ role: 'user', content: text });
+  setChatBusy(true);
+  try {
+    var res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
+    });
+    var data = {};
+    try { data = await res.json(); } catch (e) {}
+    if (res.ok && data.ok && data.reply) {
+      chatHistory.push({ role: 'assistant', content: data.reply });
+      addChatMessage('bot', data.reply, { actions: actionsForChat(data.action) });
+      if (data.quick_replies && data.quick_replies.length) {
+        renderChatQuick(data.quick_replies);
+      }
+      runChatAction(data.action);
+      return;
+    }
+  } catch (e) {}
+  var fallback = getChatReply(text);
+  chatHistory.push({ role: 'assistant', content: fallback });
+  addChatMessage('bot', fallback, { actions: actionsForChat('none') });
+}
+
 function sendChatMessage() {
+  if (chatBusy) return;
   var input = document.getElementById('chatInput');
   var text = (input.value || '').trim();
   if (!text) return;
   input.value = '';
   addChatMessage('user', text);
-  setTimeout(function() { addChatMessage('bot', getChatReply(text)); }, 400);
+  askHavelaChat(text).finally(function() { setChatBusy(false); });
 }
 
 function handleChatQuick(q) {
+  if (chatBusy) return;
   addChatMessage('user', q);
-  setTimeout(function() {
-    if (q.indexOf('Ballpark') !== -1 || q.indexOf('Kitchen') !== -1) {
-      addChatMessage('bot', 'Opening our 60-second pricing questionnaire — real Metro Atlanta ranges without showroom markup.');
-      setTimeout(openPricingWizard, 600);
-    } else if (q.indexOf('Book') !== -1) {
-      addChatMessage('bot', 'Opening consultation scheduling…');
-      setTimeout(openScheduleOnly, 600);
-    } else if (q.indexOf('Talk to Shaun') !== -1) {
-      addChatMessage('bot', 'Call or text 404-494-0994 anytime. I can also take you to the contact form.');
-      setTimeout(function() { showPage('contact'); toggleChat(false); }, 800);
-    } else {
-      addChatMessage('bot', getChatReply(q));
-    }
-  }, 350);
+  askHavelaChat(q).finally(function() { setChatBusy(false); });
 }
 
 function getChatReply(msg) {

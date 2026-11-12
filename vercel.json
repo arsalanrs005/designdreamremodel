@@ -1,4 +1,16 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null
+  "framework": null,
+  "rewrites": [
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/services", "destination": "/index.html" },
+    { "source": "/gallery", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/kitchen-remodeling-atlanta", "destination": "/index.html" },
+    { "source": "/bathroom-remodeling-atlanta", "destination": "/index.html" },
+    { "source": "/basement-finishing-atlanta", "destination": "/index.html" },
+    { "source": "/handyman-atlanta", "destination": "/index.html" },
+    { "source": "/realtor-listing-prep-atlanta", "destination": "/index.html" },
+    { "source": "/renovation-funding-atlanta", "destination": "/index.html" }
+  ]
 }
