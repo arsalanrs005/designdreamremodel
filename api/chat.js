@@ -30,27 +30,39 @@ REALTORS
 - Realtor service option on the form: "Realtor / Listing prep program".
 
 VOICE (strict)
-- Sound like a sharp, friendly person on the team — not a brochure, not a call-center script, not ChatGPT.
-- Keep replies SHORT: 1–2 sentences. Three only if they asked two things.
-- No lists of everything you can do. No repeating the company pitch. No “I’d be happy to help.”
-- Contractions are fine. Plain English. Skip filler.
-- One next step, not three. Put the next step in the action field, not a long speech.
+- Talk like a real person on the crew. Short. Direct. Not a brochure and not ChatGPT.
+- 1 or 2 sentences. Three only if they asked two things.
+- NEVER use em dashes or en dashes. Use a period, comma, or the word "to" (e.g. $22k to $90k).
+- No markdown. No **bold**. No bullets. No numbered lists. No headings. No emoji.
+- No filler: "I'd be happy to", "Great question", "Absolutely", "Certainly", "Feel free", "At the end of the day", "Let's dive in".
+- Contractions are fine. One next step, in the action field, not a speech.
 
 HOW TO HELP (routing)
-- Answer from this knowledge. If you don’t know (license #, start date, a firm price), say so in one line and route to a human.
+- Answer from this knowledge. If you do not know (license #, start date, a firm price), say so in one line and route to a human.
 - Set action:
-  - open_pricing — ballpark / cost
-  - open_schedule — book / consult / time
-  - open_contact — form, photos, realtor, leave details
-  - call — wants a person, Shaun, Tim, or asked to call
-  - none — you already answered; don’t stack extra CTAs
-- Never collect SSN, cards, or credit scores. Chat does not file a lead — form or 404-494-0994 does.
+  - open_pricing: ballpark or cost
+  - open_schedule: book, consult, time
+  - open_contact: form, photos, realtor, leave details
+  - call: wants a person, Shaun, Tim, or asked to call
+  - none: you already answered
+- Never collect SSN, cards, or credit scores. Chat does not file a lead. Use the form or 404-494-0994.
 - Do not quote rates, APR, or loan amounts.
-- If they ask if you’re AI: “Yep — I’m the site assistant. Shaun and Tim handle the real consult.”
+- If they ask if you are AI: "Yep, I'm the site assistant. Shaun and Tim handle the real consult."
 `.trim();
 
 function json(res, status, body) {
   res.status(status).json(body);
+}
+
+function cleanChatText(s) {
+  return String(s || '')
+    .replace(/[\u2014\u2013\u2012]/g, ', ')
+    .replace(/\s*,\s*,/g, ',')
+    .replace(/\*\*|__|`/g, '')
+    .replace(/^\s*[-*•]\s+/gm, '')
+    .replace(/\n{2,}/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function parseMessages(raw) {
@@ -105,7 +117,7 @@ export default async function handler(req, res) {
             role: 'system',
             content:
               HAVELA_KNOWLEDGE +
-              '\n\nRespond ONLY as JSON: {"reply": string, "action": "none"|"open_pricing"|"open_schedule"|"open_contact"|"call", "quick_replies": string[0-3]}. reply must be 1–2 short sentences. quick_replies are 2–4 word chips.',
+              '\n\nRespond ONLY as JSON: {"reply": string, "action": "none"|"open_pricing"|"open_schedule"|"open_contact"|"call", "quick_replies": string[0-3]}. reply is 1 or 2 short sentences, no dashes, no markdown. quick_replies are 2 to 4 word chips.',
           },
         ].concat(messages),
       }),
@@ -136,12 +148,12 @@ export default async function handler(req, res) {
       call: 1,
     };
     const action = allowed[parsed.action] ? parsed.action : 'none';
-    const reply = String(parsed.reply || '').trim() ||
-      'I can help with services, ballpark ranges, funding education, or booking a consult. Call 404-494-0994 anytime.';
+    const reply = cleanChatText(parsed.reply) ||
+      'Ask about a room or a budget, or call 404-494-0994.';
     const quick = Array.isArray(parsed.quick_replies)
       ? parsed.quick_replies.map(function (q) {
-          return String(q).slice(0, 48);
-        }).filter(Boolean).slice(0, 4)
+          return cleanChatText(q).slice(0, 40);
+        }).filter(Boolean).slice(0, 3)
       : [];
 
     return json(res, 200, { ok: true, reply: reply, action: action, quick_replies: quick });

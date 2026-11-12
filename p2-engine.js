@@ -41,7 +41,7 @@ var P2_BASE_RANGES = {
 var P2_SCOPE_MULT = { cosmetic: 0.7, standard: 1, full: 1.4 };
 var P2_TIMELINE_NOTE = { asap: 'Priority scheduling may affect lead times.', '1mo': '', '1-3': '', '3-6': '', planning: 'Great for design-first virtual showroom planning.' };
 
-var CHAT_GREETING = 'Hey — what are you working on? Kitchen, bath, basement, or a punch list?';
+var CHAT_GREETING = 'Hey, what are you working on? Kitchen, bath, basement, or a punch list?';
 var CHAT_QUICK = ['Ballpark pricing', 'Kitchen cost range', 'How funding works', 'Book a consultation', 'Talk to Shaun'];
 var chatHistory = [];
 var chatBusy = false;
@@ -409,13 +409,24 @@ function renderChatQuick(items) {
   });
 }
 
+function cleanChatText(s) {
+  return String(s || '')
+    .replace(/[\u2014\u2013\u2012]/g, ', ')
+    .replace(/\s*,\s*,/g, ',')
+    .replace(/\*\*|__|`/g, '')
+    .replace(/^\s*[-*•]\s+/gm, '')
+    .replace(/\n{2,}/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function addChatMessage(role, text, extras) {
   var box = document.getElementById('chatMessages');
   var wrap = document.createElement('div');
   wrap.className = 'chat-msg-wrap';
   var div = document.createElement('div');
   div.className = 'chat-msg ' + role;
-  div.textContent = text;
+  div.textContent = role === 'bot' ? cleanChatText(text) : text;
   wrap.appendChild(div);
   if (role === 'bot' && extras && extras.actions && extras.actions.length) {
     var row = document.createElement('div');
@@ -473,8 +484,9 @@ async function askHavelaChat(text) {
     var data = {};
     try { data = await res.json(); } catch (e) {}
     if (res.ok && data.ok && data.reply) {
-      chatHistory.push({ role: 'assistant', content: data.reply });
-      addChatMessage('bot', data.reply, { actions: actionsForChat(data.action) });
+      var reply = cleanChatText(data.reply);
+      chatHistory.push({ role: 'assistant', content: reply });
+      addChatMessage('bot', reply, { actions: actionsForChat(data.action) });
       if (data.quick_replies && data.quick_replies.length) {
         renderChatQuick(data.quick_replies);
       }
@@ -507,20 +519,20 @@ function getChatReply(msg) {
   var m = msg.toLowerCase();
   if (/price|cost|ballpark|budget|how much|quote|estimate/.test(m)) {
     setTimeout(openPricingWizard, 400);
-    return 'Ballpark’s the fastest way — I’ll open it. Kitchens usually land $22k–$90k; baths $11k–$48k.';
+    return 'Ballpark is the fastest way. I will open it. Kitchens usually land $22k to $90k; baths $11k to $48k.';
   }
-  if (/kitchen/.test(m)) return 'Kitchens run about $22k–$90k depending on layout and cabinets. Want the 60-second ballpark?';
-  if (/bath|bathroom/.test(m)) return 'Baths are usually $11k–$48k. Refresh vs full gut changes that a lot.';
-  if (/basement/.test(m)) return 'Finished basements typically $24k–$72k — office, suite, or media room.';
-  if (/handyman|repair|punch/.test(m)) return 'Handyman’s our small-job lane — punch lists, installs, paint. Often starts around $1.5k.';
-  if (/fund|financ|heloc|equity|loan|pay/.test(m)) return 'We talk equity-smart funding, not contractor credit cards. No rates from me — Shaun can walk it.';
+  if (/kitchen/.test(m)) return 'Kitchens run about $22k to $90k depending on layout and cabinets. Want the 60-second ballpark?';
+  if (/bath|bathroom/.test(m)) return 'Baths are usually $11k to $48k. Refresh vs full gut changes that a lot.';
+  if (/basement/.test(m)) return 'Finished basements typically $24k to $72k for an office, suite, or media room.';
+  if (/handyman|repair|punch/.test(m)) return 'Handyman is our small-job lane: punch lists, installs, paint. Often starts around $1.5k.';
+  if (/fund|financ|heloc|equity|loan|pay/.test(m)) return 'We talk equity-smart funding, not contractor credit cards. No rates from me. Shaun can walk it.';
   if (/showroom|virtual|overhead|markup|model/.test(m)) return 'No retail showroom. Virtual plan, real crews, less markup.';
-  if (/schedule|book|appointment|consult|meet/.test(m)) { setTimeout(openScheduleOnly, 400); return 'Cool — pick a window and we’ll confirm.'; }
-  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Call or text Shaun at 404-494-0994. He’s the fastest human path.';
-  if (/area|location|atlanta|roswell|serve/.test(m)) return 'Metro Atlanta — Roswell, Alpharetta, Marietta, Milton, Sandy Springs, East Cobb.';
-  if (/ai|chat|bot/.test(m)) return 'Yep, I’m the site assistant. Shaun and Tim do the real consult.';
+  if (/schedule|book|appointment|consult|meet/.test(m)) { setTimeout(openScheduleOnly, 400); return 'Cool. Pick a window and we will confirm.'; }
+  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Call or text Shaun at 404-494-0994. He is the fastest human path.';
+  if (/area|location|atlanta|roswell|serve/.test(m)) return 'Metro Atlanta: Roswell, Alpharetta, Marietta, Milton, Sandy Springs, East Cobb.';
+  if (/ai|chat|bot/.test(m)) return 'Yep, I am the site assistant. Shaun and Tim do the real consult.';
   if (/open|start|questionnaire|wizard|yes|sure|please/.test(m) && /price|tool|ballpark/.test(m)) { setTimeout(openPricingWizard, 400); return 'Opening ballpark now.'; }
-  return 'Tell me the room and roughly the budget — or call 404-494-0994.';
+  return 'Tell me the room and roughly the budget, or call 404-494-0994.';
 }
 
 function initPhase2() {
