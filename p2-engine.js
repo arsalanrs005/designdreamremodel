@@ -41,7 +41,7 @@ var P2_BASE_RANGES = {
 var P2_SCOPE_MULT = { cosmetic: 0.7, standard: 1, full: 1.4 };
 var P2_TIMELINE_NOTE = { asap: 'Priority scheduling may affect lead times.', '1mo': '', '1-3': '', '3-6': '', planning: 'Great for design-first virtual showroom planning.' };
 
-var CHAT_GREETING = 'Hi — I\'m Havela\'s assistant. I can answer questions about kitchens, baths, basements, handyman work, ballpark ranges, and smart funding, then help you book a virtual consult, open the project form, or call 404-494-0994.';
+var CHAT_GREETING = 'Hey — what are you working on? Kitchen, bath, basement, or a punch list?';
 var CHAT_QUICK = ['Ballpark pricing', 'Kitchen cost range', 'How funding works', 'Book a consultation', 'Talk to Shaun'];
 var chatHistory = [];
 var chatBusy = false;
@@ -391,7 +391,7 @@ function toggleChat(open) {
   panel.setAttribute('aria-hidden', on ? 'false' : 'true');
   if (on && !panel.dataset.inited) {
     panel.dataset.inited = '1';
-    addChatMessage('bot', CHAT_GREETING, { actions: actionsForChat('none') });
+    addChatMessage('bot', CHAT_GREETING);
     renderChatQuick();
   }
   if (on) setTimeout(function() { document.getElementById('chatInput').focus(); }, 200);
@@ -458,11 +458,6 @@ function actionsForChat(action) {
   if (action === 'open_schedule') list.push({ label: 'Pick a consult time', onClick: openScheduleOnly });
   if (action === 'open_contact') list.push({ label: 'Open project form', onClick: function() { showPage('contact'); toggleChat(false); } });
   if (action === 'call') list.push({ label: 'Call 404-494-0994', href: 'tel:4044940994' });
-  if (action === 'none' || !action) {
-    list.push({ label: 'Book consult', onClick: openScheduleOnly });
-    list.push({ label: 'Project form', onClick: function() { showPage('contact'); toggleChat(false); } });
-    list.push({ label: 'Call now', href: 'tel:4044940994' });
-  }
   return list;
 }
 
@@ -511,20 +506,21 @@ function handleChatQuick(q) {
 function getChatReply(msg) {
   var m = msg.toLowerCase();
   if (/price|cost|ballpark|budget|how much|quote|estimate/.test(m)) {
-    return 'Most homeowners start with our instant ballpark tool (about 60 seconds). Kitchen refreshes often land mid-five figures; baths mid-four to low-five; handyman programs vary widely. Want me to open the questionnaire?';
+    setTimeout(openPricingWizard, 400);
+    return 'Ballpark’s the fastest way — I’ll open it. Kitchens usually land $22k–$90k; baths $11k–$48k.';
   }
-  if (/kitchen/.test(m)) return 'Kitchen work through our virtual showroom typically runs roughly $22k–$90k depending on cabinets, layout changes, and finishes — often less overhead than a traditional design center. I can launch the ballpark tool filtered for kitchens.';
-  if (/bath|bathroom/.test(m)) return 'Bathroom projects usually range from about $11k for focused updates to $48k+ for full transformations. We scope virtually first so you are not paying for a brick-and-mortar showroom.';
-  if (/basement/.test(m)) return 'Finished basements in our market often fall between $24k and $72k depending on bath additions, egress, and AV. We can walk through layout options in a virtual consult.';
-  if (/handyman|repair|punch/.test(m)) return 'Handyman is our ongoing home-partner program — ideal for punch lists, installs, and small upgrades. Many visits bundle into efficient routes; ballpark starts around $1.5k for defined scopes.';
-  if (/fund|financ|heloc|equity|loan|pay/.test(m)) return 'We guide smart renovation funding — often equity-first (HELOC-style) rather than high-pressure retail contractor cards. Visit Project funding on the site or mention it in your inquiry; we keep it educational, not salesy.';
-  if (/showroom|virtual|overhead|markup|model/.test(m)) return 'We eliminated expensive showrooms and unnecessary overhead — not quality. You get AI-assisted virtual design, real contractors, and transparent conversations instead of retail markups.';
-  if (/schedule|book|appointment|consult|meet/.test(m)) { setTimeout(openScheduleOnly, 500); return 'Opening consultation scheduling — pick a date and time window that works for you.'; }
-  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Absolutely — call or text 404-494-0994 or email HavelaRenovationGroup@gmail.com. I can also take you to the contact form with your details pre-filled if you have used the pricing tool.';
-  if (/area|location|atlanta|roswell|serve/.test(m)) return 'We serve Metro Atlanta including Roswell, Alpharetta, Marietta, Milton, Sandy Springs, and East Cobb.';
-  if (/ai|chat|bot/.test(m)) return 'I am a guided assistant built for fast answers — not a replacement for Shaun and the team. For site-specific advice, a short virtual consult is best.';
-  if (/open|start|questionnaire|wizard|yes|sure|please/.test(m) && /price|tool|ballpark/.test(m)) { setTimeout(openPricingWizard, 500); return 'Opening the ballpark pricing questionnaire now…'; }
-  return 'Good question. For specifics on your home, the fastest path is our ballpark tool or a quick call at 404-494-0994. Try asking about kitchen costs, funding, or booking a consult — or tap a suggestion below.';
+  if (/kitchen/.test(m)) return 'Kitchens run about $22k–$90k depending on layout and cabinets. Want the 60-second ballpark?';
+  if (/bath|bathroom/.test(m)) return 'Baths are usually $11k–$48k. Refresh vs full gut changes that a lot.';
+  if (/basement/.test(m)) return 'Finished basements typically $24k–$72k — office, suite, or media room.';
+  if (/handyman|repair|punch/.test(m)) return 'Handyman’s our small-job lane — punch lists, installs, paint. Often starts around $1.5k.';
+  if (/fund|financ|heloc|equity|loan|pay/.test(m)) return 'We talk equity-smart funding, not contractor credit cards. No rates from me — Shaun can walk it.';
+  if (/showroom|virtual|overhead|markup|model/.test(m)) return 'No retail showroom. Virtual plan, real crews, less markup.';
+  if (/schedule|book|appointment|consult|meet/.test(m)) { setTimeout(openScheduleOnly, 400); return 'Cool — pick a window and we’ll confirm.'; }
+  if (/human|shaun|person|talk|call|phone/.test(m)) return 'Call or text Shaun at 404-494-0994. He’s the fastest human path.';
+  if (/area|location|atlanta|roswell|serve/.test(m)) return 'Metro Atlanta — Roswell, Alpharetta, Marietta, Milton, Sandy Springs, East Cobb.';
+  if (/ai|chat|bot/.test(m)) return 'Yep, I’m the site assistant. Shaun and Tim do the real consult.';
+  if (/open|start|questionnaire|wizard|yes|sure|please/.test(m) && /price|tool|ballpark/.test(m)) { setTimeout(openPricingWizard, 400); return 'Opening ballpark now.'; }
+  return 'Tell me the room and roughly the budget — or call 404-494-0994.';
 }
 
 function initPhase2() {
